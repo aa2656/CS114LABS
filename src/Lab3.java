@@ -18,9 +18,21 @@ interface Stack<E>{
     void push(E data);
 }
 
+
 class ALStack<E> implements Stack<E> {
     private ArrayList<E> stack = new ArrayList<E>();
     private int top;
+
+    private class StackIterator<E> implements Iterator<E>{
+        public boolean hasNext(){
+            return top>0;
+        }
+
+        public E next() {
+            return (E)stack.get(top);
+        }
+    }
+
 
     public E pop(){
         E temp = null;
@@ -37,4 +49,9 @@ class ALStack<E> implements Stack<E> {
         stack.add(data);
         top++;
     }
+
+    public Iterator<E> iterator(){
+        return new StackIterator<E>();
+    }
+
 }
