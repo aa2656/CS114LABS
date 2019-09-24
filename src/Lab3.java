@@ -23,24 +23,6 @@ class ALStack<E> implements Stack<E> {
     private ArrayList<E> stack = new ArrayList<E>();
     private int top;
 
-    private class StackIterator<E> implements Iterator<E>{
-        public boolean hasNext(){
-
-            return top>0;
-        }
-
-        public E next() {
-
-            return (E)stack.get(top);
-        }
-    }
-
-    public Iterator<E> iterator(){
-
-        return new StackIterator<E>();
-    }
-
-
     public E pop(){
         E temp = null;
         if(top > 0) {
