@@ -6,18 +6,17 @@ public class Lab3 {
         for(int i=0;i<11;i++){
             stack.push(i);
         }
+
         for(int i=0; i <11;++i){
             System.out.println(stack.pop());
         }
     }
-
 }
 
-interface Stack<E>{
+interface Stack<E> extends Iterable<E>{
     E pop();
     void push(E data);
 }
-
 
 class ALStack<E> implements Stack<E> {
     private ArrayList<E> stack = new ArrayList<E>();
@@ -39,6 +38,8 @@ class ALStack<E> implements Stack<E> {
         top++;
     }
 
+    public Iterator<E> iterator(){
 
-
+        return stack.iterator();
+    }
 }
