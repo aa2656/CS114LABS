@@ -1,9 +1,20 @@
 import java.util.Iterator;
 
 public class SortedList_LinkedList {
-
+    public static void main(String[] args){
+        SortedList<Integer> intList = new SortedList<Integer>();
+        for(int i = 0; i <10;i++){
+            intList.insert(i);
+        }
+        for(int i = 0; i<10;i++){
+            System.out.println(intList.retrieve(i));
+        }
+        for(int i = 0; i<10; i++){
+            intList.remove(i);
+        }
+        System.out.println(intList.retrieve(0));
+    }
 }
-
 abstract class List<E> implements Iterable<E> {
 
     protected class Node<T> {
@@ -31,13 +42,21 @@ class SortedList<E extends Comparable<? super E>> extends List<E> {
         Node<E> pointer = head;
         insertHelper(temp,pointer);
     }
-    public void insertHelper(Node<E> node,Node<E> pointer){
-        if(head.data == null || node.data.compareTo(head.data) < 0){
+    private void insertHelper(Node<E> node,Node<E> pointer){//if before head, if after head, before and after node
+        if(head == null){//is list is empty
+            head = node;
+        }else if(node.data.compareTo(head.data)<0){//if node is less than head
             node.next = head;
             head = node;
+        }else if(pointer.next == null){//if your at the end of the list
+            node.next = null;
+            pointer.next = node;
+        }else if(node.data.compareTo(pointer.next.data)<0){
+            node.next = pointer.next;
+            pointer.next = node;
         }else{
-            pointer=pointer.next;
-            insertHelper(node,pointer);
+            pointer = pointer.next;
+            insertHelper(node, pointer);
         }
     }
 
@@ -45,9 +64,11 @@ class SortedList<E extends Comparable<? super E>> extends List<E> {
         Node<E> pointer = head;
         removeHelper(data, pointer);
     }
-    public void removeHelper(E data, Node<E> pointer){
+    private void removeHelper(E data, Node<E> pointer){
         if(pointer.next == data){
             pointer.next = pointer.next.next;
+        }else if(head.data == data){//this is a special case for the first node
+            head = head.next;
         }else{
             removeHelper(data, pointer);
         }
@@ -57,27 +78,32 @@ class SortedList<E extends Comparable<? super E>> extends List<E> {
         Node<E> pointer = head;
         return retrieveHelper(index, 0, pointer);
     }
-    public E retrieveHelper(int index, int i, Node<E> pointer){
-        if(index == i){
+    private E retrieveHelper(int index, int i, Node<E> pointer){
+        if(pointer == null){//returns null if object not in linked list
+            return null;
+        }else if(index == i){
             return pointer.data;
-        }else{
+        }else {
             pointer=pointer.next;
-            retrieveHelper(index, ++i, pointer);
+            return retrieveHelper(index, ++i, pointer);
         }
     }
 
     public boolean search(E data){
-
+        Node<E> pointer = head;
+        return searchHelper(data, pointer);
     }
-    public void seachHelper(E data, Node<E> pointer){
-        if(pointer.next == data){
-            pointer.next = pointer.next.next;
+    private boolean searchHelper(E data, Node<E> pointer){
+        if(pointer.data == data){
+            return true;
+        }else if(pointer.next == null){
+            return false;
         }else{
-            removeHelper(data, pointer);
+            pointer=pointer.next;
+            searchHelper(data, pointer);
         }
+        return false;
     }
-
-
 
     public Iterator<E> iterator() {
         return null;
